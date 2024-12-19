@@ -28,8 +28,6 @@ def partTwo():
     for line in lines:
         for l in line:
             dos.append(l.split("don't()")[0])
-            print(l)
-            print(l.split("don't()"))
     for line in dos:
         for y in re.findall(r"mul+\(+[0-9]+,[0-9]+\)", line):
             if y[0]+y[1]+y[2] == "mul" and len(y[3:]) <= 12:
@@ -41,3 +39,21 @@ def partTwo():
                     res = res + reslt
     return res
 print(partTwo())
+
+'''
+
+982038u40812u01023
+921380948019389
+
+0213941234don128374089178230948019234
+032837273279
+
+89213749023484983
+
+902380923590
+do2384950824
+
+39857295dont90384094238059
+
+
+'''
