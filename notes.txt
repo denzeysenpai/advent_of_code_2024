@@ -1,0 +1,5 @@
+Needs improvement:
+
+regex
+search algorithms
+numpy filtering
