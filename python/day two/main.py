@@ -1,16 +1,17 @@
 import numpy as np
 import math as mt
 
-inp = open("../../input/day22.txt", "r")
+inp = open("../../input/day2.txt", "r")
 
 def CheckDifference(bigger, smaller):
     dif = bigger - smaller
     return  dif > 0 and dif <= 3
 
+
 def partOne():
+    unsafe = []
     safeCount = 0
     for _ in inp:
-        dampener = 0
         rowR = _.strip().split(" ")
         rowS = np.array([])
         for val in rowR:
@@ -26,60 +27,49 @@ def partOne():
             if isIncreasing:
                 curr = rowS[(numOfRows - 1) - it]
                 next = rowS[(numOfRows - 2) - it]
-                if not CheckDifference(curr, next):
-                    if dampener > 0 :
-                        isValid = False
-                        break
-                    else:
-                        dampener = dampener + 1
+            if not CheckDifference(curr, next):
+                isValid = False
+                unsafe.append(rowS)
+                break
+                   
         if isValid:
-            print(rowS)
             safeCount = safeCount + 1
-    return safeCount
+    return [unsafe, safeCount]
 
 def breakP(value):
     print(value)
     # input()
 
 def partTwo():
-    safeCount = 0
     items = 0
-    for _ in inp:
-        dampener = 0
-        rowR = _.strip().split(" ")
-        rowS = np.array([])
-        items = items + 1
-        for val in rowR:
-            rowS = np.append(rowS,int(val))
-        isIncreasing = True
-        isValid = True
-        numOfRows = np.size(rowS)
-        if rowS[0] > rowS[numOfRows- 1] or (rowS[0] >= rowS[numOfRows- 1] and rowS[numOfRows - 1] < rowS[mt.floor(numOfRows / 2)]):
-            # print("dec ",rowS)
-            isIncreasing = False
-        for va in range(numOfRows - 1):
-            if dampener > 2:
-                isValid = False
-                continue
-            curr = rowS[va]
-            next = rowS[va + 1]
-            if isIncreasing:
-                curr = rowS[numOfRows - 1 - va]
-                next = rowS[numOfRows - 2 - va]
-            if not CheckDifference(curr, next):
-                dampener = dampener + 1
-                val = va + 2
-                if val != np.size(rowS):
-                    next = rowS[val]
-                if isIncreasing:
-                    next = rowS[numOfRows - 3 - va]
-                if (not CheckDifference(curr, next)) and dampener <= 1:
-                    dampener = dampener + 1
-
-        breakP((isValid,dampener,rowS))
-        if isValid:
-            safeCount = safeCount + 1
-    return safeCount, items 
+    unsafes = partOne()
+    safeCount = len(unsafes[0])
+    passed = np.array([])
+    for row in unsafes[0]:
+        ascendingCount = 0
+        descendingCount = 0
+        for _ in range(len(row)):
+            dampener = 1
+            newRow = np.delete(row, _)
+            i = 0
+            j = 1
+            while True:
+                curr = newRow[i]
+                next = newRow[j]
+                if ascendingCount > descendingCount:
+                    curr = newRow[j]
+                    next = newRow[i]
+                if not CheckDifference(curr, next):
+                    dampener = dampener - 1
+                i = i + 1
+                j = j + 1
+                if j == len(newRow):
+                    break
+            if dampener >= 0:
+                _ = len(row)
+                print(newRow)
+                safeCount = safeCount - 1
+    return safeCount + unsafes[1]
 print(partTwo())
 
 # if unsafe detected, dampener--
