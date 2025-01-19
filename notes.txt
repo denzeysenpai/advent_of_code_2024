@@ -3,3 +3,6 @@ Needs improvement:
 regex
 search algorithms
 numpy filtering
+
+
+Hey there! I will continue this project soon with multiple languages for research and academic purposes!
