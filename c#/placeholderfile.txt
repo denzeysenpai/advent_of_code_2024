@@ -1,0 +1,1 @@
+Hey, this is so that the folders get pushed to github, will be removed once the other files are added
